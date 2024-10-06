@@ -9,7 +9,12 @@ export default function Home() {
   const [user] = useAuthState(auth);
   const router = useRouter()
   const userSession = sessionStorage.getItem('user');
-
+/*
+The sessionStorage is being used in these files to maintain a simple client-side session state for the user. Let's break down its usage across the different files:
+Here, sessionStorage is used to check if a user session exists. If there's no Firebase user (user) and no session stored in sessionStorage, the user is redirected to the sign-up page.
+The purpose of using sessionStorage in this context is to provide a simple, client-side way to remember that a user has authenticated, even if the Firebase auth state is not immediately available (e.g., during page reloads). This helps prevent unnecessary redirects to the sign-up page when a user has already authenticated.
+However, it's important to note that sessionStorage is not secure for storing sensitive information, as it's client-side storage. In this case, it's just being used as a simple flag to indicate authentication state, which is generally acceptable. The actual secure authentication is still handled by Firebase.
+*/
   console.log({user})
  
   if (!user && !userSession){
@@ -22,6 +27,7 @@ export default function Home() {
       <button onClick={() => {
         signOut(auth)
         sessionStorage.removeItem('user')
+        //When logging out, sessionStorage.removeItem('user') is called to remove the session indicator.
         }}>
         Log out
       </button>

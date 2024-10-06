@@ -15,6 +15,7 @@ const SignIn = () => {
         const res = await signInWithEmailAndPassword(email, password);
         console.log({res});
         sessionStorage.setItem('user', true)
+        //Similarly, after a successful sign-in, sessionStorage.setItem('user', true) is called to store a session indicator.
         setEmail('');
         setPassword('');
         router.push('/')
