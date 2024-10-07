@@ -1,34 +1,45 @@
-'use client'
-import Image from 'next/image'
-import {useAuthState} from 'react-firebase-hooks/auth'
-import {auth} from '@/app/firebase/config'
-import { useRouter } from 'next/navigation';
-import { signOut } from 'firebase/auth';
+"use client";
+import Image from "next/image";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/config";
+import { useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
+import { useEffect } from "react";
 
 export default function Home() {
   const [user] = useAuthState(auth);
-  const router = useRouter()
-  const userSession = sessionStorage.getItem('user');
-/*
+  const router = useRouter();
+  // const userSession = sessionStorage.getItem('user');
+  /*
 The sessionStorage is being used in these files to maintain a simple client-side session state for the user. Let's break down its usage across the different files:
 Here, sessionStorage is used to check if a user session exists. If there's no Firebase user (user) and no session stored in sessionStorage, the user is redirected to the sign-up page.
 The purpose of using sessionStorage in this context is to provide a simple, client-side way to remember that a user has authenticated, even if the Firebase auth state is not immediately available (e.g., during page reloads). This helps prevent unnecessary redirects to the sign-up page when a user has already authenticated.
 However, it's important to note that sessionStorage is not secure for storing sensitive information, as it's client-side storage. In this case, it's just being used as a simple flag to indicate authentication state, which is generally acceptable. The actual secure authentication is still handled by Firebase.
 */
-  console.log({user})
- 
-  if (!user && !userSession){
-    router.push('/sign-up')
-  }
-  
+  // console.log({user})
+
+  // if (!user && !userSession){
+  //   router.push('/sign-up')
+  // }
+
+  const userSession =
+    typeof window !== "undefined" ? localStorage.getItem("user") : null;
+
+  useEffect(() => {
+    if (!user && !userSession) {
+      router.push("/sign-up");
+    }
+  }, [user, userSession, router]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <button onClick={() => {
-        signOut(auth)
-        sessionStorage.removeItem('user')
-        //When logging out, sessionStorage.removeItem('user') is called to remove the session indicator.
-        }}>
+      <button
+        onClick={() => {
+          signOut(auth);
+          sessionStorage.removeItem("user");
+          //When logging out, sessionStorage.removeItem('user') is called to remove the session indicator.
+        }}
+      >
         Log out
       </button>
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
@@ -43,7 +54,7 @@ However, it's important to note that sessionStorage is not secure for storing se
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
+            By{" "}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
@@ -75,7 +86,7 @@ However, it's important to note that sessionStorage is not secure for storing se
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
+            Docs{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -92,7 +103,7 @@ However, it's important to note that sessionStorage is not secure for storing se
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
+            Learn{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -109,7 +120,7 @@ However, it's important to note that sessionStorage is not secure for storing se
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
+            Templates{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -126,7 +137,7 @@ However, it's important to note that sessionStorage is not secure for storing se
           rel="noopener noreferrer"
         >
           <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
+            Deploy{" "}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
               -&gt;
             </span>
@@ -137,19 +148,8 @@ However, it's important to note that sessionStorage is not secure for storing se
         </a>
       </div>
     </main>
-  )
+  );
 }
-
-
-
-
-
-
-
-
-
-
-
 
 // 'use client'
 // import Image from "next/image";

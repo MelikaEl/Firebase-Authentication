@@ -12,7 +12,7 @@ const SignUp = () => {
     try {
         const res = await createUserWithEmailAndPassword(email, password)
         console.log({res})
-        sessionStorage.setItem('user', true)
+        localStorage.setItem('user', true)
         //After a successful sign-up, sessionStorage.setItem('user', true) is called to store a session indicator.
         setEmail('');
         setPassword('')
